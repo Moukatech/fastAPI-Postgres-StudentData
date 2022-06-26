@@ -1,10 +1,12 @@
+import os
 from curses import meta
 from databases import Database 
 
 from sqlalchemy import (create_engine, MetaData, Column, String, DateTime,func, Table, Integer )
 from sqlalchemy.sql import func
-database_url = "postgresql://mocha:Nyangau92@localhost:5432/fastapiDB"
 
+# database_url = "postgresql://mocha:Nyangau92@localhost:5432/fastapiDB"
+database_url = os.environ.get("DATABASE_URL")
 engine = create_engine(database_url)
 metadata = MetaData()
 
