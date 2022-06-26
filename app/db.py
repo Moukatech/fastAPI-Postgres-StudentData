@@ -7,8 +7,12 @@ from sqlalchemy.sql import func
 
 # database_url = "postgresql://mocha:Nyangau92@localhost:5432/fastapiDB"
 database_url = os.getenv("DATABASE_URL")
-engine = create_engine(database_url)
+if database_url and database_url.startswith("postgres://"):
+    uri = database_url.replace("postgres://", "postgresql://", 1)
+engine = create_engine(uri)
 metadata = MetaData()
+
+
 
 students = Table(
     "students",
@@ -31,4 +35,4 @@ users = Table(
     Column("password", String(250)),
     Column("created_date", DateTime, default=func.now(), nullable=False),
 )
-database = Database(database_url)
+database = Database(uri)
