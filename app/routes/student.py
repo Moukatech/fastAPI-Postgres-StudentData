@@ -10,7 +10,7 @@ async def add_student(student: registerSchema= Body(...)):
     add_student = await create_student(student)
     return {"Message": "Added Student successfully"}
 
-@router.get("/studentList")
+@router.get("/studentList", dependencies=[Depends(auth_bearer.JWTBearer())])
 async def all_students():
     all_student = await list_students()
     return {"List": all_student}
@@ -23,7 +23,7 @@ async def get_student(student_name):
     return {"List": student}
 
 
-@router.put("/update/{id_number}")
+@router.put("/update/{id_number}", dependencies=[Depends(auth_bearer.JWTBearer())])
 async def student_update(id_number:int,payload:registerSchema):
     student = await select_one_student(id_number)
     if student:
@@ -31,7 +31,7 @@ async def student_update(id_number:int,payload:registerSchema):
         return {"Message": "Updated successfully"}
     raise HTTPException(status_code = 404, detail = "Student Not found")
 
-@router.delete("/delete/{id_number}")
+@router.delete("/delete/{id_number}",dependencies=[Depends(auth_bearer.JWTBearer())])
 async def student_delete(id_number:int):
     student = await select_one_student(id_number)
     if  student:
